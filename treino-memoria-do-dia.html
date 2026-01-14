@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroTreino IA | Clínica Casulo</title>
+    <meta name="description" content="NeuroTreino IA: Estimulação cognitiva assistida para idosos. Exercícios de memória e suporte emocional com a assistente virtual Vivi. Desenvolvido pela Dra. Júlia Caroline.">
+    <meta name="keywords" content="NeuroTreino IA, Estimulação Cognitiva, Exercícios de Memória, Idosos, Alzheimer, Saúde Mental Idoso, Assistente Virtual, Psicóloga Paranaíba">
+    <meta name="author" content="Dra. Júlia Caroline Cantario Andrade">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://psicologajuliacantario.com.br/treino-memoria-do-dia.html" />
+
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:title" content="NeuroTreino IA | Dra. Júlia Caroline">
+    <meta property="og:description" content="Estimulação cognitiva assistida para idosos. Exercícios de memória e suporte emocional com a assistente virtual Vivi.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://psicologajuliacantario.com.br/treino-memoria-do-dia.html">
+    <meta property="og:image" content="assets/img/og-image.jpg"> 
+    <meta property="og:site_name" content="Clínica Casulo">
+    <meta name="theme-color" content="#F9F8F4">
+
+    <link rel="icon" href="assets/img/favicon.jpg" type="image/jpeg" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: { 
+                extend: { 
+                    colors: { 'casulo-gold': '#C5A059', 'casulo-bg': '#F9F8F4', 'casulo-text': '#2D2D2D', 'casulo-accent': '#8E733B' }, 
+                    fontFamily: { 'serif': ['"Playfair Display"', 'serif'], 'sans': ['"Montserrat"', 'sans-serif'] },
+                    animation: { 'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite' }
+                } 
+            }
+        }
+    </script>
+    <style>
+        /* Estilos Base e Acessibilidade */
+        body { -webkit-font-smoothing: antialiased; }
+        .memory-card { transform-style: preserve-3d; transition: all 0.6s cubic-bezier(0.4, 0.0, 0.2, 1); }
+        .memory-card.flipped { background: white; border: 2px solid #C5A059; transform: rotateY(180deg); }
+        .memory-card.matched { background: #E8F5E9; border-color: #4CAF50; color: #4CAF50; transform: rotateY(180deg); opacity: 0.8; }
+        
+        /* Efeito de Microfone Ativo */
+        .mic-active { animation: ripple 1.5s linear infinite; background-color: #ef4444 !important; border-color: #ef4444 !important; color: white !important; }
+        @keyframes ripple { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { box-shadow: 0 0 0 20px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+        
+        /* Transições de Tela */
+        .screen-transition { animation: slideUp 0.6s ease-out forwards; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Botões Gigantes para Acessibilidade */
+        .btn-big { transition: transform 0.2s; }
+        .btn-big:active { transform: scale(0.95); }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+    </style>
+</head>
+<body class="bg-casulo-bg font-sans text-casulo-text min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="bg-white rounded-[2rem] shadow-2xl p-6 lg:p-10 max-w-2xl w-full border-t-8 border-casulo-gold relative min-h-[650px] flex flex-col">
+        
+        <header class="flex justify-between items-start mb-6 border-b border-gray-100 pb-4" role="banner">
+            <div>
+                <h1 class="font-serif text-3xl lg:text-4xl text-casulo-gold mb-1">NeuroTreino <span class="text-xs bg-casulo-gold text-white px-2 py-1 rounded-md align-middle ml-2 font-sans">IA</span></h1>
+                <p class="text-gray-400 font-light text-sm tracking-wide uppercase">Estimulação Cognitiva Assistida</p>
+            </div>
+            <button onclick="toggleAudio()" id="btn-audio" class="w-12 h-12 rounded-full bg-gray-100 text-gray-400 hover:text-casulo-gold hover:bg-casulo-gold/10 transition-all flex items-center justify-center text-xl" title="Ativar/Desativar Voz da Vivi" aria-label="Ativar ou desativar a voz da assistente Vivi" type="button">
+                <i class="fas fa-volume-up" aria-hidden="true"></i>
+            </button>
+        </header>
+
+        <main id="app-content" class="flex-1 flex flex-col justify-center relative" role="main">
+            
+            <section id="view-intro" class="screen-transition text-center" role="region" aria-labelledby="greet-text">
+                <div class="mb-6 relative inline-block">
+                    <div class="w-24 h-24 bg-casulo-gold rounded-full flex items-center justify-center text-4xl text-white mx-auto shadow-lg z-10 relative" aria-hidden="true">
+                        <i class="fas fa-user-astronaut"></i>
+                    </div>
+                    <div id="vivi-pulse" class="absolute inset-0 bg-casulo-gold rounded-full opacity-20 hidden" aria-hidden="true"></div>
+                </div>
+                
+                <h2 id="greet-text" class="text-3xl font-serif text-gray-800 mb-3">Olá! Eu sou a Vivi.</h2>
+                <p class="text-lg text-gray-500 mb-8 max-w-md mx-auto">Sou sua assistente de memória. Vamos exercitar seu cérebro hoje?</p>
+
+                <div id="login-area" class="max-w-xs mx-auto space-y-4 hidden" role="form" aria-labelledby="login-heading">
+                    <h3 id="login-heading" class="sr-only">Como devo te chamar?</h3>
+                    <label for="user-name" class="sr-only">Seu nome</label>
+                    <input type="text" id="user-name" placeholder="Como devo te chamar?" class="w-full p-4 rounded-xl border-2 border-gray-200 text-lg text-center focus:border-casulo-gold focus:ring-0 outline-none transition-colors" aria-required="true">
+                    <button onclick="registrarUsuario()" class="w-full bg-casulo-gold text-white font-bold py-4 rounded-xl hover:bg-[#b08d48] shadow-lg text-lg btn-big" aria-label="Confirmar nome de usuário" type="button">
+                        Pode me chamar assim
+                    </button>
+                </div>
+
+                <div id="start-area" class="hidden">
+                     <p id="last-login-info" class="text-sm text-casulo-gold font-medium mb-6 uppercase tracking-widest" aria-live="polite"></p>
+                    <button onclick="iniciarSessao()" class="w-full bg-casulo-gold text-white font-bold py-5 rounded-2xl hover:bg-[#b08d48] shadow-xl text-xl btn-big flex items-center justify-center gap-3" aria-label="Começar treino de memória" type="button">
+                        <i class="fas fa-play" aria-hidden="true"></i> COMEÇAR TREINO
+                    </button>
+                </div>
+            </section>
+
+            <section id="view-game" class="hidden screen-transition flex flex-col items-center" role="region" aria-labelledby="level-display">
+                <div class="w-full flex justify-between items-center mb-6 px-2">
+                    <h2 class="text-sm font-bold text-gray-400">NÍVEL <span id="level-display" class="text-casulo-gold text-xl ml-1" aria-live="polite">1</span></h2>
+                    <div class="flex gap-1" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="2">
+                        <div class="w-3 h-3 rounded-full bg-gray-200 indicator" id="ind-1" aria-label="Indicador de progresso 1"></div>
+                        <div class="w-3 h-3 rounded-full bg-gray-200 indicator" id="ind-2" aria-label="Indicador de progresso 2"></div>
+                    </div>
+                </div>
+
+                <div id="game-container" class="w-full max-w-md" role="application" aria-label="Jogo de Treino de Memória">
+                    </div>
+            </section>
+
+            <section id="view-diary" class="hidden screen-transition text-center" role="region" aria-labelledby="diary-heading">
+                <h2 id="diary-heading" class="text-2xl font-serif text-casulo-gold mb-2">Memória do Dia</h2>
+                <p class="text-gray-600 mb-6">O que você gostaria de deixar registrado sobre hoje?</p>
+
+                <div class="relative mb-6 group">
+                    <label for="diary-text" class="sr-only">Diário de Memória</label>
+                    <textarea id="diary-text" rows="5" class="w-full p-5 rounded-2xl border-2 border-gray-200 bg-gray-50 text-lg focus:bg-white focus:border-casulo-gold outline-none resize-none shadow-inner" placeholder="Toque no microfone para falar..." aria-label="Campo para registrar a memória do dia"></textarea>
+                    
+                    <button onclick="toggleDictation()" id="mic-btn" class="absolute bottom-4 right-4 w-14 h-14 rounded-full bg-white text-casulo-gold shadow-lg border border-gray-100 flex items-center justify-center text-2xl hover:scale-110 transition-all z-10" aria-label="Ativar ou desativar ditado por voz" type="button">
+                        <i class="fas fa-microphone" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+                <p id="dictation-status" class="h-6 text-sm text-red-500 font-bold mb-4 opacity-0 transition-opacity" aria-live="polite">Ouvindo... pode falar.</p>
+
+                <button onclick="salvarTreino()" class="bg-[#25D366] text-white px-10 py-4 rounded-full font-bold shadow-lg hover:bg-[#20ba5a] transition-all flex items-center justify-center gap-3 mx-auto text-lg btn-big w-full max-w-xs" aria-label="Enviar memória do dia para Dra. Júlia via WhatsApp" type="button">
+                    <i class="fab fa-whatsapp" aria-hidden="true"></i> Enviar para Dra. Júlia
+                </button>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        // --- NÚCLEO DE INTELIGÊNCIA ARTIFICIAL (SIMULADA & NATIVA) ---
+        const App = {
+            dados: {
+                nome: '',
+                nivel: 1, // 1 a 5
+                pontosXP: 0,
+                ultimoAcesso: null,
+                historico: []
+            },
+            estado: {
+                falando: false,
+                ouvindo: false,
+                audioHabilitado: true,
+                jogoAtual: null
+            },
+            
+            // Sintetizador de Voz (Vivi)
+            voz: window.speechSynthesis,
+            vozSelecionada: null,
+
+            init() {
+                this.carregarDados();
+                this.configurarVoz();
+                this.renderizarTelaInicial();
+            },
+
+            carregarDados() {
+                const salvo = localStorage.getItem('neurotreino_user');
+                if(salvo) this.dados = JSON.parse(salvo);
+            },
+
+            salvarDados() {
+                localStorage.setItem('neurotreino_user', JSON.stringify(this.dados));
+            },
+
+            // Configuração da Web Speech API (Text-to-Speech)
+            configurarVoz() {
+                // Tenta carregar as vozes (às vezes é assíncrono no Chrome)
+                let voices = this.voz.getVoices();
+                this.voz.onvoiceschanged = () => {
+                    voices = this.voz.getVoices();
+                    // Procura voz feminina pt-BR (Google ou Microsoft)
+                    this.vozSelecionada = voices.find(v => v.lang.includes('pt-BR') && (v.name.includes('Google') || v.name.includes('Luciana'))) || voices.find(v => v.lang.includes('pt-BR'));
+                };
+            },
+
+            falar(texto) {
+                if(!this.estado.audioHabilitado) return;
+                
+                // Cancela falas anteriores
+                this.voz.cancel();
+
+                const utter = new SpeechSynthesisUtterance(texto);
+                if(this.vozSelecionada) utter.voice = this.vozSelecionada;
+                
+                // Ajustes para idosos: um pouco mais devagar e claro
+                utter.rate = 0.9; 
+                utter.pitch = 1.1; 
+                utter.volume = 1;
+
+                // Animação visual da Vivi
+                utter.onstart = () => {
+                    document.getElementById('vivi-pulse').classList.remove('hidden');
+                    document.getElementById('vivi-pulse').classList.add('animate-ping');
+                };
+                utter.onend = () => {
+                    document.getElementById('vivi-pulse').classList.add('hidden');
+                    document.getElementById('vivi-pulse').classList.remove('animate-ping');
+                };
+
+                this.voz.speak(utter);
+            }
+        };
+
+        // --- CONTROLE DE UI ---
+        function alternarTelas(idTela) {
+            ['view-intro', 'view-game', 'view-diary'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(idTela).classList.remove('hidden');
+        }
+
+        App.renderizarTelaInicial = function() {
+            alternarTelas('view-intro');
+            const loginArea = document.getElementById('login-area');
+            const startArea = document.getElementById('start-area');
+            const greetText = document.getElementById('greet-text');
+            const lastLoginInfo = document.getElementById('last-login-info');
+
+            if (App.dados.nome) {
+                greetText.innerText = `Bem-vindo(a) de volta, ${App.dados.nome}!`;
+                if (App.dados.ultimoAcesso) {
+                    const lastAccessDate = new Date(App.dados.ultimoAcesso).toLocaleDateString('pt-BR');
+                    lastLoginInfo.innerText = `ÚLTIMO ACESSO: ${lastAccessDate}`;
+                }
+                loginArea.classList.add('hidden');
+                startArea.classList.remove('hidden');
+                App.falar(`Bem-vindo(a) de volta, ${App.dados.nome}! Pronto para o treino de hoje?`);
+            } else {
+                greetText.innerText = 'Olá! Eu sou a Vivi.';
+                loginArea.classList.remove('hidden');
+                startArea.classList.add('hidden');
+                App.falar('Olá! Eu sou a Vivi, sua assistente de memória. Como devo te chamar?');
+            }
+        };
+
+        function registrarUsuario() {
+            const userNameInput = document.getElementById('user-name');
+            const userName = userNameInput.value.trim();
+            if (userName) {
+                App.dados.nome = userName;
+                App.salvarDados();
+                App.renderizarTelaInicial();
+            } else {
+                alert('Por favor, digite seu nome.');
+                userNameInput.focus();
+            }
+        }
+
+        function iniciarSessao() {
+            App.dados.ultimoAcesso = new Date().toISOString();
+            App.salvarDados();
+            alternarTelas('view-game');
+            App.falar(`Ótimo, ${App.dados.nome}! Vamos começar o treino de memória.`);
+            App.estado.jogoAtual = new MemoryGame();
+            App.estado.jogoAtual.start();
+        }
+
+        function toggleAudio() {
+            App.estado.audioHabilitado = !App.estado.audioHabilitado;
+            const audioBtn = document.getElementById('btn-audio');
+            audioBtn.innerHTML = App.estado.audioHabilitado ? '<i class="fas fa-volume-up"></i>' : '<i class="fas fa-volume-mute"></i>';
+            audioBtn.title = App.estado.audioHabilitado ? 'Desativar Voz da Vivi' : 'Ativar Voz da Vivi';
+            App.voz.cancel(); // Para qualquer fala em andamento
+        }
+
+        // --- JOGO DA MEMÓRIA --- (Simplificado para o exemplo)
+        class MemoryGame {
+            constructor() {
+                this.level = App.dados.nivel;
+                this.cards = [];
+                this.flippedCards = [];
+                this.matchedPairs = 0;
+                this.canFlip = true;
+                this.emojis = ['🍎', '🍌', '🍓', '🍇', '🍊', '🍋', '🍐', '🥝', '🥭', '🍍'];
+                this.gameContainer = document.getElementById('game-container');
+                this.levelDisplay = document.getElementById('level-display');
+                this.indicators = [document.getElementById('ind-1'), document.getElementById('ind-2')];
+            }
+
+            start() {
+                this.levelDisplay.innerText = this.level;
+                this.matchedPairs = 0;
+                this.flippedCards = [];
+                this.canFlip = true;
+                this.gameContainer.innerHTML = '';
+                this.generateCards();
+                this.shuffleCards();
+                this.renderCards();
+                this.updateIndicators();
+                App.falar(`Nível ${this.level}. Encontre os pares!`);
+            }
+
+            generateCards() {
+                const numPairs = Math.min(this.level + 2, this.emojis.length); // Max 10 pairs
+                let selectedEmojis = this.emojis.slice(0, numPairs);
+                this.cards = [...selectedEmojis, ...selectedEmojis].map((emoji, index) => ({
+                    id: index,
+                    emoji: emoji,
+                    isFlipped: false,
+                    isMatched: false
+                }));
+            }
+
+            shuffleCards() {
+                for (let i = this.cards.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
+                }
+            }
+
+            renderCards() {
+                this.gameContainer.className = `grid gap-4 grid-cols-${Math.min(4, this.level + 2)} max-w-full mx-auto`;
+                this.gameContainer.innerHTML = this.cards.map(card => `
+                    <div class="memory-card aspect-square bg-gray-100 rounded-xl flex items-center justify-center text-4xl cursor-pointer shadow-md hover:shadow-lg transition-all ${card.isFlipped ? 'flipped' : ''} ${card.isMatched ? 'matched' : ''}" 
+                         data-id="${card.id}" data-emoji="${card.emoji}" onclick="App.estado.jogoAtual.flipCard(${card.id}, this)" 
+                         role="button" aria-label="Carta de memória virada para baixo">
+                        <div class="front absolute backface-hidden">?</div>
+                        <div class="back absolute backface-hidden rotate-y-180">${card.emoji}</div>
+                    </div>
+                `).join('');
+            }
+
+            flipCard(id, element) {
+                if (!this.canFlip || this.flippedCards.length === 2 || this.cards[id].isFlipped || this.cards[id].isMatched) return;
+
+                this.cards[id].isFlipped = true;
+                element.classList.add('flipped');
+                element.setAttribute('aria-label', `Carta virada: ${this.cards[id].emoji}`);
+                this.flippedCards.push({ id, element });
+
+                if (this.flippedCards.length === 2) {
+                    this.canFlip = false;
+                    setTimeout(() => this.checkForMatch(), 1000);
+                }
+            }
+
+            checkForMatch() {
+                const [card1, card2] = this.flippedCards;
+
+                if (this.cards[card1.id].emoji === this.cards[card2.id].emoji) {
+                    this.cards[card1.id].isMatched = true;
+                    this.cards[card2.id].isMatched = true;
+                    card1.element.classList.add('matched');
+                    card2.element.classList.add('matched');
+                    card1.element.setAttribute('aria-label', `Par encontrado: ${this.cards[card1.id].emoji}`);
+                    card2.element.setAttribute('aria-label', `Par encontrado: ${this.cards[card2.id].emoji}`);
+                    App.falar('Par encontrado!');
+                    this.matchedPairs++;
+                    App.dados.pontosXP += 10;
+                    App.salvarDados();
+                    if (this.matchedPairs === this.cards.length / 2) {
+                        this.levelUp();
+                    }
+                } else {
+                    this.cards[card1.id].isFlipped = false;
+                    this.cards[card2.id].isFlipped = false;
+                    card1.element.classList.remove('flipped');
+                    card2.element.classList.remove('flipped');
+                    card1.element.setAttribute('aria-label', 'Carta de memória virada para baixo');
+                    card2.element.setAttribute('aria-label', 'Carta de memória virada para baixo');
+                    App.falar('Tente novamente.');
+                }
+                this.flippedCards = [];
+                this.canFlip = true;
+            }
+
+            levelUp() {
+                App.falar(`Parabéns, ${App.dados.nome}! Você completou o nível ${this.level}!`);
+                this.level++;
+                App.dados.nivel = this.level;
+                App.salvarDados();
+                this.updateIndicators();
+                setTimeout(() => this.start(), 2000);
+            }
+
+            updateIndicators() {
+                this.indicators.forEach((ind, i) => {
+                    if (i < this.level - 1) {
+                        ind.classList.remove('bg-gray-200');
+                        ind.classList.add('bg-casulo-gold');
+                    } else {
+                        ind.classList.remove('bg-casulo-gold');
+                        ind.classList.add('bg-gray-200');
+                    }
+                });
+            }
+        }
+
+        // --- DITADO POR VOZ (Web Speech API)
+        let recognition;
+        if ('webkitSpeechRecognition' in window) {
+            recognition = new webkitSpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'pt-BR';
+
+            recognition.onstart = function() {
+                App.estado.ouvindo = true;
+                document.getElementById('mic-btn').classList.add('mic-active');
+                document.getElementById('dictation-status').innerText = 'Ouvindo... pode falar.';
+                document.getElementById('dictation-status').classList.remove('opacity-0');
+            };
+
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                document.getElementById('diary-text').value += transcript + '. ';
+            };
+
+            recognition.onerror = function(event) {
+                console.error('Erro no reconhecimento de voz:', event.error);
+                document.getElementById('dictation-status').innerText = 'Erro ao ouvir. Tente novamente.';
+                document.getElementById('dictation-status').classList.remove('opacity-0');
+                setTimeout(() => document.getElementById('dictation-status').classList.add('opacity-0'), 3000);
+            };
+
+            recognition.onend = function() {
+                App.estado.ouvindo = false;
+                document.getElementById('mic-btn').classList.remove('mic-active');
+                document.getElementById('dictation-status').classList.add('opacity-0');
+            };
+        }
+
+        function toggleDictation() {
+            if (!recognition) {
+                alert('Seu navegador não suporta reconhecimento de voz.');
+                return;
+            }
+            if (App.estado.ouvindo) {
+                recognition.stop();
+            } else {
+                recognition.start();
+            }
+        }
+
+        function salvarTreino() {
+            const diaryText = document.getElementById('diary-text').value.trim();
+            if (!diaryText) {
+                alert('Por favor, escreva ou dite sua memória do dia.');
+                return;
+            }
+
+            const entry = {
+                date: new Date().toISOString(),
+                text: diaryText,
+                level: App.dados.nivel,
+                xp: App.dados.pontosXP
+            };
+            App.dados.historico.push(entry);
+            App.salvarDados();
+
+            const waMessage = `Olá Dra. Júlia, registrei minha memória do dia no NeuroTreino IA:\n\n*Nome:* ${App.dados.nome}\n*Data:* ${new Date().toLocaleDateString('pt-BR')}\n*Nível Atual:* ${App.dados.nivel}\n*Memória do Dia:* ${diaryText}\n\nPodemos conversar sobre isso na próxima sessão.`;
+            const link = `https://wa.me/5567981106724?text=${encodeURIComponent(waMessage)}`;
+            window.open(link, '_blank');
+
+            alert('Memória salva e enviada para a Dra. Júlia!');
+            document.getElementById('diary-text').value = ''; // Limpa o campo
+            alternarTelas('view-intro'); // Volta para a tela inicial
+        }
+
+        // Inicializa o aplicativo
+        document.addEventListener('DOMContentLoaded', () => {
+            App.init();
+        });
+    </script>
+
+</body>
+</html>

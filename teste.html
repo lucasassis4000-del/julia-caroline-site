@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Teste IGRP-15 | Jornada de Autoconhecimento</title>
+    <meta name="description" content="Faça o Teste IGRP-15 para um rastreio inicial de TDAH, Ansiedade e Depressão. Entenda seus padrões e inicie sua jornada de autoconhecimento com a Dra. Júlia Caroline.">
+    <meta name="keywords" content="Teste IGRP-15, Rastreio TDAH, Teste Ansiedade, Teste Depressão, Autoconhecimento, Psicóloga Paranaíba">
+    <meta name="author" content="Dra. Júlia Caroline Cantario Andrade">
+    <meta name="robots" content="noindex, nofollow"> <!-- Este é um teste interno, não deve ser indexado -->
+    <link rel="canonical" href="https://psicologajuliacantario.com.br/teste.html" />
+
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:title" content="Teste IGRP-15 | Dra. Júlia Caroline">
+    <meta property="og:description" content="Rastreio inicial para TDAH, Ansiedade e Depressão. Descubra seus padrões e inicie sua jornada de autoconhecimento.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://psicologajuliacantario.com.br/teste.html">
+    <meta property="og:image" content="assets/img/og-image.jpg"> 
+    <meta property="og:site_name" content="Clínica Casulo">
+    <meta name="theme-color" content="#F9F8F4">
+
+    <link rel="icon" href="assets/img/favicon.jpg" type="image/jpeg" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <script>
+        tailwind.config = { 
+            theme: { 
+                extend: { 
+                    colors: { 'casulo-gold': '#C5A059', 'casulo-bg': '#F9F8F4', 'casulo-text': '#333333' }, 
+                    fontFamily: { 'serif': ['"Playfair Display"', 'serif'], 'sans': ['"Montserrat"', 'sans-serif'] }, 
+                    animation: { 'slide-in': 'slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards' }, 
+                    keyframes: { slideIn: { '0%': { opacity: '0', transform: 'translateY(10px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } } } 
+                } 
+            } 
+        }
+    </script>
+
+    <style>
+        /* CSS de Segurança */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html, body { overflow-x: hidden; width: 100%; position: relative; }
+        body { padding-bottom: 20px; } /* Espaço extra no final para scroll */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+    </style>
+</head>
+<body class="bg-casulo-bg text-casulo-text font-sans min-h-[100dvh] flex flex-col">
+
+    <header class="h-20 flex-none flex items-center justify-between px-6 bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-40 w-full" role="banner">
+        <span class="font-serif text-casulo-gold text-2xl tracking-wide truncate">IGRP-15</span>
+        <a href="index.html" class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 hover:text-casulo-gold transition-colors whitespace-nowrap ml-4" aria-label="Sair do teste e voltar para a página inicial" role="link">Sair ✕</a>
+    </header>
+
+    <div class="w-full bg-gray-100 h-1 flex-none" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+        <div id="progress-bar" class="bg-casulo-gold h-1 transition-all duration-700 ease-out" style="width: 0%"></div>
+    </div>
+
+    <main class="flex-1 w-full max-w-full relative overflow-x-hidden p-4 flex flex-col items-center" role="main">
+        
+        <section id="step-intro" class="text-center max-w-lg mx-auto animate-slide-in mt-8" role="region" aria-labelledby="intro-heading">
+            <span class="text-casulo-gold font-bold text-xs tracking-[0.2em] uppercase mb-4 block">Rastreio Psicológico</span>
+            <h1 id="intro-heading" class="font-serif text-3xl md:text-4xl mb-6 text-casulo-text break-words px-2">Jornada de Clareza</h1>
+            <p class="text-gray-500 mb-10 font-light leading-relaxed px-4">Responda com base nas últimas duas semanas. Não existem respostas erradas, apenas a sua verdade.</p>
+            <button onclick="IGRPTest.start()" class="bg-casulo-text text-white px-10 py-4 rounded-full shadow-lg hover:bg-casulo-gold hover:-translate-y-1 transition-all text-xs uppercase tracking-widest font-bold" aria-label="Iniciar Teste IGRP-15" type="button">Iniciar Teste</button>
+        </section>
+
+        <section id="step-question" class="hidden max-w-3xl w-full mx-auto text-center mt-4" role="region" aria-labelledby="q-text">
+            <span id="q-counter" class="text-[10px] text-casulo-gold font-bold tracking-[0.2em] uppercase mb-6 block" aria-live="polite">Questão 1 de 15</span>
+            
+            <div class="min-h-[6rem] flex items-center justify-center mb-8 px-2">
+                <h2 id="q-text" class="font-serif text-2xl md:text-4xl text-casulo-text leading-tight break-words">...</h2>
+            </div>
+            
+            <div class="w-full overflow-x-auto pb-4 px-1 no-scrollbar" role="group" aria-labelledby="q-text">
+                <div class="grid grid-cols-5 gap-2 md:gap-6 min-w-[280px] max-w-[500px] mx-auto">
+                    <button onclick="IGRPTest.answer(0)" class="flex flex-col items-center gap-2 md:gap-3 group" aria-label="Resposta: Nunca, valor 0" type="button"><div class="w-11 h-11 md:w-16 md:h-16 rounded-full border border-gray-200 bg-white flex items-center justify-center group-hover:bg-casulo-bg group-hover:border-casulo-gold transition-all text-lg md:text-xl font-serif text-gray-400 group-hover:text-casulo-gold shadow-sm">0</div><span class="text-[9px] md:text-[10px] uppercase tracking-wider text-gray-400 group-hover:text-casulo-text">Nunca</span></button>
+                    <button onclick="IGRPTest.answer(1)" class="flex flex-col items-center gap-2 md:gap-3 group" aria-label="Resposta: Leve, valor 1" type="button"><div class="w-11 h-11 md:w-16 md:h-16 rounded-full border border-gray-200 bg-white flex items-center justify-center group-hover:bg-[#F0FDF4] group-hover:border-green-300 transition-all text-lg md:text-xl font-serif text-gray-400 group-hover:text-green-600 shadow-sm">1</div><span class="text-[9px] md:text-[10px] uppercase tracking-wider text-gray-400 group-hover:text-casulo-text">Leve</span></button>
+                    <button onclick="IGRPTest.answer(2)" class="flex flex-col items-center gap-2 md:gap-3 group" aria-label="Resposta: Moderado, valor 2" type="button"><div class="w-11 h-11 md:w-16 md:h-16 rounded-full border border-gray-200 bg-white flex items-center justify-center group-hover:bg-[#FEFCE8] group-hover:border-yellow-300 transition-all text-lg md:text-xl font-serif text-gray-400 group-hover:text-yellow-600 shadow-sm">2</div><span class="text-[9px] md:text-[10px] uppercase tracking-wider text-gray-400 group-hover:text-casulo-text">Mod.</span></button>
+                    <button onclick="IGRPTest.answer(3)" class="flex flex-col items-center gap-2 md:gap-3 group" aria-label="Resposta: Grave, valor 3" type="button"><div class="w-11 h-11 md:w-16 md:h-16 rounded-full border border-gray-200 bg-white flex items-center justify-center group-hover:bg-[#FFF7ED] group-hover:border-orange-300 transition-all text-lg md:text-xl font-serif text-gray-400 group-hover:text-orange-600 shadow-sm">3</div><span class="text-[9px] md:text-[10px] uppercase tracking-wider text-gray-400 group-hover:text-casulo-text">Grave</span></button>
+                    <button onclick="IGRPTest.answer(4)" class="flex flex-col items-center gap-2 md:gap-3 group" aria-label="Resposta: Extremamente Grave, valor 4" type="button"><div class="w-11 h-11 md:w-16 md:h-16 rounded-full border border-gray-200 bg-white flex items-center justify-center group-hover:bg-[#FEF2F2] group-hover:border-red-300 transition-all text-lg md:text-xl font-serif text-gray-400 group-hover:text-red-600 shadow-sm">4</div><span class="text-[9px] md:text-[10px] uppercase tracking-wider text-gray-400 group-hover:text-casulo-text">Extr.</span></button>
+                </div>
+            </div>
+        </section>
+
+        <section id="step-lead" class="hidden w-full max-w-md mx-auto bg-white p-6 md:p-10 rounded-3xl shadow-xl border border-gray-100 text-center animate-slide-in mt-4" role="form" aria-labelledby="lead-heading">
+            <h2 id="lead-heading" class="font-serif text-2xl mb-2 text-casulo-text">Análise Concluída</h2>
+            <p class="text-gray-400 text-sm mb-8 font-light">Para gerar seu gráfico personalizado, insira seus dados.</p>
+            <label for="lead-name" class="sr-only">Seu Nome</label>
+            <input type="text" id="lead-name" placeholder="Seu Nome" class="w-full mb-4 p-4 rounded-xl border border-gray-200 focus:border-casulo-gold outline-none transition-all box-border appearance-none text-base" aria-required="true">
+            <label for="lead-whatsapp" class="sr-only">WhatsApp</label>
+            <input type="tel" id="lead-whatsapp" placeholder="WhatsApp" class="w-full mb-8 p-4 rounded-xl border border-gray-200 focus:border-casulo-gold outline-none transition-all box-border appearance-none text-base" aria-required="true">
+            <button onclick="IGRPTest.submit()" id="btn-submit" class="w-full bg-casulo-gold text-white py-4 rounded-xl font-bold shadow-lg hover:bg-[#b08d48] transition-all" aria-label="Ver Resultado Completo" type="submit">Ver Resultado Completo</button>
+        </section>
+
+        <section id="step-result" class="hidden w-full max-w-5xl mx-auto animate-slide-in pb-8" role="region" aria-labelledby="res-title">
+            <div class="bg-white p-5 sm:p-8 lg:p-12 w-full rounded-3xl lg:rounded-[2.5rem] shadow-xl border border-gray-100 overflow-hidden">
+                
+                <div class="flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-12 items-center w-full min-w-0">
+                    
+                    <div class="order-2 lg:order-1 w-full min-w-0 flex flex-col">
+                        <h2 class="font-serif text-2xl lg:text-4xl text-casulo-text mb-4 break-words leading-tight pr-2" id="res-title"></h2>
+                        <div class="h-1 w-24 bg-casulo-gold mb-6 lg:mb-8" aria-hidden="true"></div>
+                        
+                        <p class="text-gray-500 leading-relaxed mb-6 lg:mb-8 font-light text-base lg:text-lg break-words hyphens-auto pr-1" id="res-text"></p>
+                        
+                        <div class="bg-[#F9F8F4] p-5 rounded-2xl border-l-4 border-casulo-gold mb-8 w-full box-border" role="note" aria-labelledby="res-tip">
+                            <span class="text-xs font-bold text-casulo-gold uppercase block mb-2 tracking-widest">Micro-Intervenção Sugerida</span>
+                            <p class="text-sm text-casulo-text font-medium break-words leading-relaxed" id="res-tip"></p>
+                        </div>
+                        <a id="wa-link" href="#" target="_blank" class="block w-full lg:w-auto text-center bg-[#25D366] text-white px-6 py-4 rounded-full hover:bg-[#1da851] transition-all font-bold shadow-lg shadow-green-100 text-sm lg:text-base break-words" aria-label="Agendar Análise Profunda via WhatsApp" role="button">Agendar Análise Profunda →</a>
+                    </div>
+
+                    <div class="order-1 lg:order-2 w-full flex justify-center min-w-0 mb-4 lg:mb-0">
+                         <div class="relative w-full max-w-[350px] lg:max-w-full overflow-hidden h-[300px] lg:h-[400px] mx-auto" aria-hidden="true">
+                            <canvas id="radarChart"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="risk-modal" class="fixed inset-0 bg-[#333]/90 z-50 hidden flex items-center justify-center p-6 backdrop-blur-md" role="dialog" aria-modal="true" aria-labelledby="risk-modal-heading">
+        <div class="bg-white p-8 lg:p-10 rounded-[2rem] max-w-md w-full text-center shadow-2xl safe-area-pb">
+            <div class="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl" aria-hidden="true">!</div>
+            <h3 id="risk-modal-heading" class="font-serif text-2xl text-gray-800 mb-2">Atenção Prioritária</h3>
+            <p class="text-gray-500 mb-8 font-light">Identificamos um sinal importante de sofrimento. Você não precisa passar por isso sozinho(a).</p>
+            <div class="flex flex-col gap-4">
+                <a href="tel:188" class="bg-red-500 text-white py-4 rounded-xl font-bold hover:bg-red-600 transition-all" role="link" aria-label="Ligar para o Centro de Valorização da Vida (CVV) no número 188">Ligar para CVV (188)</a>
+                <a href="https://wa.me/5567981106724?text=Preciso%20de%20ajuda%20urgente" class="bg-white border-2 border-green-500 text-green-600 py-4 rounded-xl font-bold hover:bg-green-50 transition-all" role="link" aria-label="Falar com a Dra. Júlia Caroline via WhatsApp para ajuda urgente">Falar com a Dra. Júlia</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const IGRPTest = {
+            current: 0, answers: {},
+            questions: [
+                { id: 'q1', text: 'Sentiu-se incapaz de sentir prazer ou interesse?', cluster: 'A' },
+                { id: 'q2', text: 'Sensação de tristeza profunda ou vazio?', cluster: 'A' },
+                { id: 'q3', text: 'Estado de alerta constante ou tensão?', cluster: 'B' },
+                { id: 'q4', text: 'Medo intenso repentino (coração disparado)?', cluster: 'B' },
+                { id: 'q5', text: 'Mente "barulhenta", difícil de desligar?', cluster: 'B' },
+                { id: 'q6', text: 'Dificuldade para organizar tarefas/foco?', cluster: 'C' },
+                { id: 'q7', text: 'Inquietação motora ou impulsividade?', cluster: 'C' },
+                { id: 'q8', text: 'Oscilações drásticas de energia?', cluster: 'D' },
+                { id: 'q9', text: 'Irritabilidade excessiva ("pavio curto")?', cluster: 'D' },
+                { id: 'q10', text: 'Evitou socializar por medo de julgamento?', cluster: 'B' },
+                { id: 'q11', text: 'Pensamentos repetitivos ou rituais?', cluster: 'B' },
+                { id: 'q12', text: 'Sentiu-se desconectado da realidade?', cluster: 'D' },
+                { id: 'q13', text: 'Alterações bruscas no sono ou apetite?', cluster: 'A' },
+                { id: 'q14', text: 'Dificuldade em controlar emoções?', cluster: 'D' },
+                { id: 'q15', text: 'Pensamentos de que a vida não vale a pena?', cluster: 'A' }
+            ],
+            start() {
+                document.getElementById('step-intro').classList.add('hidden');
+                document.getElementById('step-question').classList.remove('hidden');
+                document.getElementById('step-question').classList.add('animate-slide-in');
+                this.renderQuestion();
+            },
+            renderQuestion() {
+                const q = this.questions[this.current];
+                document.getElementById('q-counter').innerText = `Questão ${this.current + 1} de ${this.questions.length}`;
+                document.getElementById('q-text').innerText = q.text;
+                document.getElementById('progress-bar').style.width = `${((this.current) / this.questions.length) * 100}%`;
+                const container = document.getElementById('step-question');
+                container.classList.remove('animate-slide-in'); void container.offsetWidth; container.classList.add('animate-slide-in');
+            },
+            answer(value) {
+                const q = this.questions[this.current];
+                this.answers[q.id] = value;
+                this.current++;
+                if (this.current < this.questions.length) {
+                    this.renderQuestion();
+                } else {
+                    this.showLeadForm();
+                }
+            },
+            showLeadForm() {
+                document.getElementById('step-question').classList.add('hidden');
+                document.getElementById('step-lead').classList.remove('hidden');
+                document.getElementById('progress-bar').style.width = '100%';
+            },
+            submit() {
+                const name = document.getElementById('lead-name').value;
+                const whatsapp = document.getElementById('lead-whatsapp').value;
+
+                if (!name || !whatsapp) {
+                    alert('Por favor, preencha seu nome e WhatsApp para ver o resultado.');
+                    return;
+                }
+
+                this.analyzeResults(name, whatsapp);
+            },
+            analyzeResults(name, whatsapp) {
+                let scoreA = 0; // Depressão/Anedonia
+                let scoreB = 0; // Ansiedade/Preocupação
+                let scoreC = 0; // TDAH/Desatenção/Hiperatividade
+                let scoreD = 0; // Humor/Irritabilidade/Desregulação
+
+                for (const qId in this.answers) {
+                    const question = this.questions.find(q => q.id === qId);
+                    const value = this.answers[qId];
+                    if (question) {
+                        switch (question.cluster) {
+                            case 'A': scoreA += value; break;
+                            case 'B': scoreB += value; break;
+                            case 'C': scoreC += value; break;
+                            case 'D': scoreD += value; break;
+                        }
+                    }
+                }
+
+                const maxScorePerCluster = 4 * (this.questions.filter(q => q.cluster === 'A').length || 1); // Max score for cluster A
+
+                const results = {
+                    A: (scoreA / maxScorePerCluster) * 100, // % do score máximo
+                    B: (scoreB / maxScorePerCluster) * 100,
+                    C: (scoreC / maxScorePerCluster) * 100,
+                    D: (scoreD / maxScorePerCluster) * 100,
+                };
+
+                this.displayResult(results, name, whatsapp);
+            },
+            displayResult(results, name, whatsapp) {
+                document.getElementById('step-lead').classList.add('hidden');
+                document.getElementById('step-result').classList.remove('hidden');
+
+                let title = "";
+                let text = "";
+                let tip = "";
+                let risk = false;
+
+                // Lógica de interpretação dos resultados
+                if (results.A > 75 || results.B > 75 || results.C > 75 || results.D > 75) {
+                    title = "Atenção! Sinais de Alerta Importantes.";
+                    text = "Seus resultados indicam um nível elevado de sintomas em algumas áreas. É fundamental buscar apoio profissional para uma avaliação mais aprofundada. Lembre-se, você não está sozinho(a).";
+                    tip = "Considere agendar uma consulta para entender melhor esses resultados e iniciar um plano de cuidado.";
+                    risk = true;
+                } else if (results.A > 50 || results.B > 50 || results.C > 50 || results.D > 50) {
+                    title = "Resultados Moderados. Fique Atento(a).";
+                    text = "Alguns sintomas estão presentes em um nível que merece sua atenção. Pequenas mudanças e o acompanhamento podem fazer uma grande diferença.";
+                    tip = "Observe como esses pontos se manifestam no seu dia a dia e considere conversar com um profissional.";
+                } else {
+                    title = "Bom Trabalho! Continue Cuidando de Si.";
+                    text = "Seus resultados indicam um bom equilíbrio emocional e cognitivo. Continue investindo no seu bem-estar!";
+                    tip = "Mantenha hábitos saudáveis e esteja atento(a a qualquer mudança em seu humor ou comportamento.";
+                }
+
+                document.getElementById('res-title').innerText = title;
+                document.getElementById('res-text').innerText = text;
+                document.getElementById('res-tip').innerText = tip;
+
+                if (risk) {
+                    document.getElementById('risk-modal').classList.remove('hidden');
+                }
+
+                // Atualiza o link do WhatsApp com os resultados
+                const waMessage = `Olá Dra. Júlia, fiz o teste IGRP-15 e gostaria de conversar sobre meus resultados.\n\nNome: ${name}\nWhatsApp: ${whatsapp}\n\nResultados:\nDepressão/Anedonia: ${results.A.toFixed(1)}%\nAnsiedade/Preocupação: ${results.B.toFixed(1)}%\nTDAH/Desatenção/Hiperatividade: ${results.C.toFixed(1)}%\nHumor/Irritabilidade/Desregulação: ${results.D.toFixed(1)}%`;
+                document.getElementById('wa-link').href = `https://wa.me/5567981106724?text=${encodeURIComponent(waMessage)}`;
+
+                this.renderChart(results);
+            },
+            renderChart(results) {
+                const ctx = document.getElementById('radarChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Depressão/Anedonia', 'Ansiedade/Preocupação', 'TDAH/Desatenção', 'Humor/Irritabilidade'],
+                        datasets: [{
+                            label: 'Seu Perfil',
+                            data: [results.A, results.B, results.C, results.D],
+                            backgroundColor: 'rgba(197, 160, 89, 0.4)',
+                            borderColor: '#C5A059',
+                            borderWidth: 2,
+                            pointBackgroundColor: '#C5A059',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: '#C5A059'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                                grid: { color: 'rgba(0, 0, 0, 0.1)' },
+                                pointLabels: { font: { size: 12, family: 'Montserrat' }, color: '#333333' },
+                                ticks: { display: false, beginAtZero: true, max: 100 },
+                                min: 0,
+                                max: 100
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.dataset.label + ': ' + context.raw.toFixed(1) + '%';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        };
+    </script>
+
+</body>
+</html>
